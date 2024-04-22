@@ -1,5 +1,10 @@
 <?php
 
+namespace User;
+
+use Auth\Exception\AuthException;
+use Auth\Interface\AuthInterface;
+
 class Member extends User implements AuthInterface
 {
     protected static int $counter = 0;
@@ -9,8 +14,7 @@ class Member extends User implements AuthInterface
         protected string $login,
         protected string $password,
         protected int $age,
-    )
-    {
+    ) {
         parent::__construct($name);
         static::$counter++;
     }
@@ -22,7 +26,11 @@ class Member extends User implements AuthInterface
 
     public function auth(string $login, string $password): bool
     {
-        return $this->login === $login && $this->password === $password;
+        if ($this->login !== $login || $this->password !== $password) {
+            throw new AuthException($login);
+        }
+
+        return true;
     }
 
     public static function count(): int

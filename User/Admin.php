@@ -1,5 +1,9 @@
 <?php
 
+namespace User;
+
+use User\Enum\AdminLevel;
+
 class Admin extends Member
 {
     protected static int $counter = 0;

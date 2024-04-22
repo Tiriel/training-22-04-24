@@ -1,5 +1,6 @@
 <?php
 
+namespace User;
 abstract class User
 {
     public function __construct(protected string $name)
