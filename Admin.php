@@ -2,6 +2,8 @@
 
 class Admin extends Member
 {
+    protected static int $counter = 0;
+
     public function __construct(
         string $login,
         string $password,
