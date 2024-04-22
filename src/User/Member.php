@@ -1,9 +1,9 @@
 <?php
 
-namespace User;
+namespace App\User;
 
-use Auth\Exception\AuthException;
-use Auth\Interface\AuthInterface;
+use App\Auth\Exception\AuthException;
+use App\Auth\Interface\AuthInterface;
 
 class Member extends User implements AuthInterface
 {

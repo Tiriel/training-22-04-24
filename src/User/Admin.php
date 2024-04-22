@@ -1,8 +1,8 @@
 <?php
 
-namespace User;
+namespace App\User;
 
-use User\Enum\AdminLevel;
+use App\User\Enum\AdminLevel;
 
 class Admin extends Member
 {

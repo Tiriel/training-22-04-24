@@ -1,6 +1,6 @@
 <?php
 
-namespace Auth\Exception;
+namespace App\Auth\Exception;
 class AuthException extends \RuntimeException
 {
     public function __construct(string $login)
