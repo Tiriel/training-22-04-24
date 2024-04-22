@@ -1,15 +1,17 @@
 <?php
 
-class Member
+class Member extends User implements AuthInterface
 {
     protected static int $counter = 0;
 
     public function __construct(
+        string $name,
         protected string $login,
         protected string $password,
         protected int $age,
     )
     {
+        parent::__construct($name);
         static::$counter++;
     }
 
