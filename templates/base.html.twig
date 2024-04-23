@@ -13,11 +13,11 @@
     </head>
     <body>
         {% block navbar %}
-            {{ include('includes/_navbar.html.twig') }}
+            <twig:NavBar></twig:NavBar>
         {% endblock %}
         {% block body %}{% endblock %}
     <footer>
-        {{ render(path('app_movie_decades')) }}
+        <twig:DecadesMenu></twig:DecadesMenu>
     </footer>
     </body>
 </html>

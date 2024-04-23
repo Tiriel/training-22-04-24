@@ -1,0 +1,7 @@
+{% props target = '', label = '' %}
+
+<li class="nav-item">
+    <a class="nav-link{{ app.current_route == target ? ' active'}}"
+       href="{{ path(target) }}">{{ label }}</a>
+</li>
+
