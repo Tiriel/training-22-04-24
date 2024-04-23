@@ -33,4 +33,14 @@ class MovieController extends AbstractController
             'movie' => $movie,
         ]);
     }
+
+    #[Route('/_decades', name: 'app_movie_decades')]
+    public function decades(): Response
+    {
+        $decades = ['80', '90', '2000'];
+
+        return $this->render('includes/_decades.html.twig', [
+            'decades' => $decades
+        ]);
+    }
 }

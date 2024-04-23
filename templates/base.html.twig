@@ -16,5 +16,8 @@
             {{ include('includes/_navbar.html.twig') }}
         {% endblock %}
         {% block body %}{% endblock %}
+    <footer>
+        {{ render(path('app_movie_decades')) }}
+    </footer>
     </body>
 </html>
