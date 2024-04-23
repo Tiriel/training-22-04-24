@@ -1,5 +1,7 @@
 twig:
     file_name_pattern: '*.twig'
+    globals:
+        my_global: 'foo'
 
 when@test:
     twig:
