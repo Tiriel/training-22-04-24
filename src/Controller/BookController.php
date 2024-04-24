@@ -15,12 +15,13 @@ use Symfony\Component\Routing\Attribute\Route;
 class BookController extends AbstractController
 {
     #[Route('', name: 'app_book_index', methods: ['GET'])]
-    #[Template('book/index.html.twig')]
-    public function index(): array
+    public function index(BookRepository $repository): Response
     {
-        return [
-            'controller_name' => 'BookController::index',
-        ];
+        $books = $repository->findAll();
+
+        return $this->render('book/index.html.twig', [
+            'books' => $books,
+        ]);
     }
 
     #[Route('/{id<\d+>}', name: 'app_book_show', methods: ['GET'])]
