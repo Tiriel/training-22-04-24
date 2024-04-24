@@ -22,6 +22,24 @@ class BookRepository extends ServiceEntityRepository
         parent::__construct($registry, Book::class);
     }
 
+    public function save(Book $book, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($book);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(Book $book, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($book);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
     public function findByTitle(string $title): array
     {
         $qb = $this->createQueryBuilder('b');

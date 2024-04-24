@@ -5,8 +5,6 @@ namespace App\Controller;
 use App\Entity\Book;
 use App\Form\BookType;
 use App\Repository\BookRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,14 +33,19 @@ class BookController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_book_new_book', methods: ['GET', 'POST'])]
-    public function newBook(EntityManagerInterface $manager): Response
+    #[Route('/new', name: 'app_book_new', methods: ['GET', 'POST'])]
+    #[Route('/{id<\d+>}', name: 'app_book_edit', methods: ['GET', 'POST'])]
+    public function newBook(?Book $book, Request $request, BookRepository $repository): Response
     {
-        $book = new Book();
+        $book ??= new Book();
         $form = $this->createForm(BookType::class, $book);
 
-        //$manager->persist($book);
-        //$manager->flush();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $repository->save($book, true);
+
+            return $this->redirectToRoute('app_book_show', ['id' => $book->getId()]);
+        }
 
         return $this->render('book/new.html.twig', [
             'form' => $form,
