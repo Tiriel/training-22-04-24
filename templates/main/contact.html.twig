@@ -9,6 +9,11 @@
 </style>
 
 <div class="example-wrapper w-50 m-auto">
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
     <h1>Contact us</h1>
 
     {{ form_start(form) }}
