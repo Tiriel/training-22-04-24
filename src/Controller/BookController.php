@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Book;
+use App\Repository\BookRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,18 +23,30 @@ class BookController extends AbstractController
         ];
     }
 
-    #[Route('/{id<\d+>?0}', name: 'app_book_show', methods: ['GET'])]
-    public function show(Request $request, ?int $id = 1): Response
+    #[Route('/{id<\d+>}', name: 'app_book_show', methods: ['GET'])]
+    public function show(int $id, BookRepository $repository): Response
     {
-        //dump(
-        //    $request->attributes->get('_route'),
-        //    $request->attributes->get('_controller'),
-        //    $request->attributes->get('_route_params'),
-        //    $request->attributes->get('id'),
-        //);
+        $book = $repository->find($id);
 
-        return $this->render('book/index.html.twig', [
-            'controller_name' => 'BookController::show - id: '. $id,
+        return $this->render('book/show.html.twig', [
+            'book' => $book,
         ]);
+    }
+
+    #[Route('/new', name: 'app_book_new_book', methods: ['GET', 'POST'])]
+    public function newBook(EntityManagerInterface $manager): Response
+    {
+        $book = (new Book())
+            ->setTitle('1984')
+            ->setCover('https://blablah.com')
+            ->setAuthor('G.Orwell')
+            ->setReleasedAt(new \DateTimeImmutable('01-01-1959'))
+            ->setPlot('This book is too real')
+            ->setIsbn('913-12345678-12');
+
+        $manager->persist($book);
+        $manager->flush();
+
+        return $this->render('book/new.html.twig');
     }
 }
