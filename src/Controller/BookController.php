@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Book;
+use App\Form\BookType;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -37,17 +38,14 @@ class BookController extends AbstractController
     #[Route('/new', name: 'app_book_new_book', methods: ['GET', 'POST'])]
     public function newBook(EntityManagerInterface $manager): Response
     {
-        $book = (new Book())
-            ->setTitle('1984')
-            ->setCover('https://blablah.com')
-            ->setAuthor('G.Orwell')
-            ->setReleasedAt(new \DateTimeImmutable('01-01-1959'))
-            ->setPlot('This book is too real')
-            ->setIsbn('913-12345678-12');
+        $book = new Book();
+        $form = $this->createForm(BookType::class, $book);
 
-        $manager->persist($book);
-        $manager->flush();
+        //$manager->persist($book);
+        //$manager->flush();
 
-        return $this->render('book/new.html.twig');
+        return $this->render('book/new.html.twig', [
+            'form' => $form,
+        ]);
     }
 }

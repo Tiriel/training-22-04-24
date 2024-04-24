@@ -20,8 +20,16 @@ class MainController extends AbstractController
     #[Route('/contact', name: 'app_main_contact')]
     public function contact(): Response
     {
+        $form = $this->createFormBuilder();
+        $form
+            ->add('name')
+            ->add('email')
+            ->add('subject')
+            ->add('message')
+            ->getForm();
+
         return $this->render('main/contact.html.twig', [
-            'controller_name' => 'Contact',
+            'form' => $form,
         ]);
     }
 }
