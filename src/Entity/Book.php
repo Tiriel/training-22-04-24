@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ORM\ChangeTrackingPolicy('DEFERRED_EXPLICIT')]
@@ -17,21 +18,30 @@ class Book
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank()]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 6)]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $author = null;
 
+    #[Assert\Isbn(type: 'isbn13')]
+    #[Assert\NotBlank]
     #[ORM\Column(length: 30)]
     private ?string $isbn = null;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $releasedAt = null;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 20)]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $plot = null;
 
+    #[Assert\Url()]
     #[ORM\Column(length: 255)]
     private ?string $cover = null;
 
@@ -41,6 +51,7 @@ class Book
     /**
      * @var Collection<int, Comment>
      */
+    #[Assert\Valid]
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'book', cascade: ['persist'], orphanRemoval: true)]
     private Collection $comments;
 
