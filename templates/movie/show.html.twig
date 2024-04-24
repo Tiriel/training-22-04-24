@@ -9,14 +9,20 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>{{ movie.title }}</h1>
+    {% if movie is not empty %}
+        <h1>{{ movie.title }}</h1>
 
-    <ul>
-        <li>Id : {{ movie.id }}</li>
-        <li>Released At : {{ movie.releasedAt|date('d M Y') }}</li>
-        <li>Country : {{ movie.country }}</li>
-        <li>Genres : {{ movie.genres|join(', ') }}</li>
-        <li>Plot : {{ movie.plot }}</li>
-    </ul>
+{#        <img class="float-end" src="{{ movie.poster }}" alt="{{ movie.title }} cover">#}
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Id : {{ movie.id }}</li>
+{#            <li class="list-group-item">IMDb : {{ movie.imdbId }}</li>#}
+{#            <li class="list-group-item">Rated : {{ movie.rated }}</li>#}
+            <li class="list-group-item">Plot : {{ movie.plot }}</li>
+            <li class="list-group-item">Released at : {{ movie.releasedAt|date('d M Y') }}</li>
+            <li class="list-group-item">Genre : {{ movie.genres|join(', ') }}</li>
+        </ul>
+    {% else %}
+        <h1>Not found</h1>
+    {% endif %}
 </div>
 {% endblock %}

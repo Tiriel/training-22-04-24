@@ -12,10 +12,15 @@
         {% endblock %}
     </head>
     <body>
+    <header>
+        {% block header '' %}
         {% block navbar %}
             <twig:NavBar></twig:NavBar>
         {% endblock %}
+    </header>
+    <main class="container py-4 m-auto">
         {% block body %}{% endblock %}
+    </main>
     <footer>
         <twig:DecadesMenu></twig:DecadesMenu>
     </footer>
