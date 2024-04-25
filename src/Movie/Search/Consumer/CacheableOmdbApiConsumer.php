@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Attribute\When;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 
-//#[When('prod')]
+#[When('prod')]
 #[AsDecorator(OmdbApiConsumerInterface::class, priority: 5)]
 class CacheableOmdbApiConsumer implements OmdbApiConsumerInterface
 {

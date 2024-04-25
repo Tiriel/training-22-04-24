@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Movie\Factory;
+namespace App\Movie\Notifier\Factory;
 
-use App\Movie\Notifications\SlackNotification;
+use App\Movie\Notifier\Factory\NotificationFactoryInterface;
+use App\Movie\Notifier\Notifications\SlackNotification;
 use Symfony\Component\Notifier\Notification\Notification;
 
 class SlackNotificationFactory implements NotificationFactoryInterface

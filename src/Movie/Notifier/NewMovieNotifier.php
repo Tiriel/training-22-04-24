@@ -4,7 +4,7 @@ namespace App\Movie\Notifier;
 
 use App\Entity\Movie;
 use App\Entity\User;
-use App\Movie\Factory\NotificationFactoryInterface;
+use App\Movie\Notifier\Factory\NotificationFactoryInterface;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\Recipient;
