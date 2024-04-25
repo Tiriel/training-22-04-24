@@ -15,10 +15,17 @@ use Symfony\Component\Routing\Attribute\Route;
 class MovieController extends AbstractController
 {
     #[Route('', name: 'app_movie_index')]
-    public function index(MovieRepository $repository): Response
+    public function index(Request $request, MovieRepository $repository): Response
     {
+        $limit = 9;
+        $page = $request->query->getInt('page', 1);
+        $pageNums = ceil($repository->count() / $limit);
+        $movies = $repository->findBy([], [], $limit, ($page - 1) * $limit);
+
         return $this->render('movie/index.html.twig', [
-            'movies' => $repository->findAll(),
+            'movies' => $movies,
+            'pageNums' => $pageNums,
+            'currentPage' => $page,
         ]);
     }
 

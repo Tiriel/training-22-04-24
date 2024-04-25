@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MovieController!{% endblock %}
+{% block title %}{{ movie.id is not null ? 'Edit' : 'New' }} Movie{% endblock %}
 
 {% block body %}
 <style>

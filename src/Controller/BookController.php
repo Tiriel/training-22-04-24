@@ -14,12 +14,17 @@ use Symfony\Component\Routing\Attribute\Route;
 class BookController extends AbstractController
 {
     #[Route('', name: 'app_book_index', methods: ['GET'])]
-    public function index(BookRepository $repository): Response
+    public function index(Request $request, BookRepository $repository): Response
     {
-        $books = $repository->findAll();
+        $limit = 9;
+        $page = $request->query->getInt('page', 1);
+        $pageNums = ceil($repository->count() / $limit);
+        $books = $repository->findBy([], [], $limit, ($page - 1) * $limit);
 
         return $this->render('book/index.html.twig', [
             'books' => $books,
+            'pageNums' => $pageNums,
+            'currentPage' => $page,
         ]);
     }
 
