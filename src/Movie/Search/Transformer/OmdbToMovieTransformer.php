@@ -13,6 +13,8 @@ class OmdbToMovieTransformer implements OmdbTransformerInterface
         'Released',
         'Year',
         'Poster',
+        'imdbID',
+        'Rated',
     ];
 
     public function transform(mixed $datum): Movie
@@ -32,8 +34,8 @@ class OmdbToMovieTransformer implements OmdbTransformerInterface
             ->setReleasedAt(new \DateTimeImmutable($date))
             ->setPoster($datum['Poster'])
             ->setPrice(5.0)
-            //->setRated($datum['Rated'])
-            //->setImdbId($datum['imdbID'])
+            ->setRated($datum['Rated'])
+            ->setImdbId($datum['imdbID'])
         ;
     }
 }
