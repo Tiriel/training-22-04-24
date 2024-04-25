@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Book\BookManager;
 use App\Entity\Book;
 use App\Form\BookType;
 use App\Repository\BookRepository;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,25 +16,15 @@ use Symfony\Component\Routing\Attribute\Route;
 class BookController extends AbstractController
 {
     #[Route('', name: 'app_book_index', methods: ['GET'])]
-    public function index(Request $request, BookRepository $repository): Response
+    #[Template('book/index.html.twig')]
+    public function index(Request $request, BookManager $manager): array
     {
-        $limit = 9;
-        $page = $request->query->getInt('page', 1);
-        $pageNums = ceil($repository->count() / $limit);
-        $books = $repository->findBy([], [], $limit, ($page - 1) * $limit);
-
-        return $this->render('book/index.html.twig', [
-            'books' => $books,
-            'pageNums' => $pageNums,
-            'currentPage' => $page,
-        ]);
+        return $manager->getPaginated($request);
     }
 
     #[Route('/{id<\d+>}', name: 'app_book_show', methods: ['GET'])]
-    public function show(int $id, BookRepository $repository): Response
+    public function show(Book $book): Response
     {
-        $book = $repository->find($id);
-
         return $this->render('book/show.html.twig', [
             'book' => $book,
         ]);
