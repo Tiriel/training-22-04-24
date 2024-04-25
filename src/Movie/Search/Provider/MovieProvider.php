@@ -9,7 +9,7 @@ use App\Movie\Search\Transformer\OmdbToMovieTransformer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-readonly class MovieProvider implements ProviderInterface
+class MovieProvider implements ProviderInterface
 {
     public function __construct(
         protected EntityManagerInterface $manager,

@@ -6,7 +6,7 @@ use App\Entity\Genre;
 use App\Movie\Search\Transformer\OmdbToGenreTransformer;
 use App\Repository\GenreRepository;
 
-readonly class GenreProvider implements ProviderInterface
+class GenreProvider implements ProviderInterface
 {
     public function __construct(
         protected GenreRepository $repository,
