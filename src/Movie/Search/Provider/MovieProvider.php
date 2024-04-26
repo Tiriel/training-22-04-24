@@ -3,10 +3,12 @@
 namespace App\Movie\Search\Provider;
 
 use App\Entity\Movie;
+use App\Entity\User;
 use App\Movie\Search\Consumer\OmdbApiConsumerInterface;
 use App\Movie\Search\Enum\SearchType;
 use App\Movie\Search\Transformer\OmdbToMovieTransformer;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MovieProvider implements ProviderInterface
@@ -16,6 +18,7 @@ class MovieProvider implements ProviderInterface
         protected OmdbApiConsumerInterface $consumer,
         protected OmdbToMovieTransformer $transformer,
         protected GenreProvider $genreProvider,
+        protected Security $security,
     ) {
     }
 
@@ -32,6 +35,10 @@ class MovieProvider implements ProviderInterface
         }
 
         $movie = $this->transformMovie($data);
+        $user = $this->security->getUser();
+        if ($user instanceof User) {
+            $movie->setCreatedBy($user);
+        }
 
         $this->saveMovie($movie);
 

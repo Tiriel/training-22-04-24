@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Book\BookManager;
 use App\Entity\Book;
+use App\Entity\User;
 use App\Form\BookType;
 use App\Repository\BookRepository;
+use App\Security\Voter\BookVoter;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,14 +33,22 @@ class BookController extends AbstractController
     }
 
     #[Route('/new', name: 'app_book_new', methods: ['GET', 'POST'])]
-    #[Route('/{id<\d+>}', name: 'app_book_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id<\d+>}/edit', name: 'app_book_edit', methods: ['GET', 'POST'])]
     public function newBook(?Book $book, Request $request, BookRepository $repository): Response
     {
+        if ($book instanceof Book) {
+            $this->denyAccessUnlessGranted(BookVoter::IS_CREATOR, $book);
+        }
+
         $book ??= new Book();
         $form = $this->createForm(BookType::class, $book);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            if ($user instanceof User && !$book->getId()) {
+                $book->setCreatedBy($user);
+            }
             $repository->save($book, true);
 
             return $this->redirectToRoute('app_book_show', ['id' => $book->getId()]);

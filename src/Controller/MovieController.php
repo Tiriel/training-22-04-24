@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Movie;
+use App\Entity\User;
 use App\Form\MovieType;
 use App\Movie\Search\Enum\SearchType;
 use App\Movie\Search\Provider\MovieProvider;
@@ -12,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/movie')]
 class MovieController extends AbstractController
@@ -40,6 +42,7 @@ class MovieController extends AbstractController
         ]);
     }
 
+    #[IsGranted('IS_AUTHENTICATED')]
     #[Route('/omdb/{title}', name: 'app_movie_omdb', methods: ['GET'])]
     public function omdb(string $title, MovieProvider $provider): Response
     {
@@ -48,6 +51,7 @@ class MovieController extends AbstractController
         ]);
     }
 
+    #[IsGranted('movie.is_creator', 'movie')]
     #[Route('/new', name: 'app_movie_new', methods: ['GET', 'POST'])]
     #[Route('/{id<\d+>}/edit', name: 'app_movie_edit', methods: ['GET', 'POST'])]
     public function newMovie(Request $request, ?Movie $movie, EntityManagerInterface $manager): Response
@@ -57,6 +61,10 @@ class MovieController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            if ($user instanceof User && !$movie->getId()) {
+                $movie->setCreatedBy($user);
+            }
             $manager->persist($movie);
             $manager->flush();
 
